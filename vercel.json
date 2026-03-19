@@ -1,5 +1,7 @@
 {
+  "version": 2,
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" }
+    { "source": "/api/rhyme", "destination": "/api/rhyme.js" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
