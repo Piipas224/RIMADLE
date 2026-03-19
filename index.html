@@ -730,7 +730,7 @@ async function askClaude(guess, base) {
 
     const data = await response.json();
     const text = data.content.map(b => b.text || "").join("").trim();
-    const clean = text.replace(/```json|```/g, "").trim();
+    const clean = text.replace(/`+json|`+/g, "").trim();
     return JSON.parse(clean);
 }
 
