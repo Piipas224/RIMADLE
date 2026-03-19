@@ -1,8 +1,8 @@
 {
   "name": "rimadle",
   "version": "1.0.0",
-  "description": "Juego de rimas en español",
+  "type": "module",
   "engines": {
-    "node": ">=18"
+    "node": "20.x"
   }
 }
