@@ -1,5 +1,4 @@
 {
-  "outputDirectory": "public",
   "rewrites": [
     { "source": "/api/rhyme", "destination": "/api/rhyme.js" }
   ]
