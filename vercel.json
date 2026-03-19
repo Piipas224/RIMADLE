@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/api/rhyme", "destination": "/api/rhyme.js" }
+    { "source": "/api/(.*)", "destination": "/api/$1" }
   ]
 }
