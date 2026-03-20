@@ -8,33 +8,33 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Missing guess or base' });
     }
 
-    const prompt = `Eres un experto en métrica y fonética española. Evalúa si dos palabras riman.
+    const prompt = `Eres un experto en métrica y fonética española. Evalúa con MAXIMA PRECISION si dos palabras riman.
 
 Palabra base: "${base}"
 Palabra candidata: "${guess}"
 
-REGLAS ESTRICTAS:
-- Rima CONSONANTE: coinciden EXACTAMENTE todos los sonidos desde la vocal tónica hasta el final.
-- Rima ASONANTE: coinciden SOLO LAS VOCALES desde la vocal tónica hasta el final, ignorando consonantes. Ejemplo: "muelle" (patrón U-E) rima asonante con "mugre" (U-E), "fuente" (U-E), "dulce" (U-E), "cumbre" (U-E), "suerte" (U-E).
-- Para la vocal tónica: en palabras llanas es la penúltima sílaba, en agudas la última, en esdrújulas la antepenúltima.
-- Los diptongos cuentan como vocales separadas: "muelle" tiene tónica U y postónica E → patrón U-E.
-- Sé GENEROSO con la rima asonante: si el patrón vocálico coincide, es asonante.
+DEFINICIONES EXACTAS:
+- Rima CONSONANTE: desde la ultima vocal TONICA, coinciden TODOS los sonidos (vocales Y consonantes). Ejemplo: CARTA/MARTA=consonante (ambas terminan en "arta"), PELO/CIELO=consonante (ambas en "elo"), AMOR/CALOR=consonante (ambas en "or").
+- Rima ASONANTE: desde la ultima vocal TONICA, coinciden SOLO las vocales, las consonantes son DISTINTAS. Ejemplo: CARTA(A-A)/CALMA(A-A)=asonante porque "arta" != "alma". PELO(E-O)/FUEGO(E-O)=asonante porque "elo" != "ego".
+- NINGUNA: los patrones vocalicos no coinciden.
 
-Pasos:
-1. ¿Es "${guess}" una palabra real del español?
-2. Identifica el patrón vocálico de "${base}" desde su vocal tónica.
-3. Identifica el patrón vocálico de "${guess}" desde su vocal tónica.
-4. ¿Coinciden exactamente todos los sonidos? → consonante. ¿Coinciden solo las vocales? → asonante. ¿No coinciden? → ninguna.
-5. Complejidad de "${guess}": 1-10 (1=monosílabo común, 10=palabra larga/técnica/literaria rara).
+PROCESO OBLIGATORIO paso a paso:
+1. Es "${guess}" una palabra real del espanol?
+2. Cual es la terminacion exacta de "${base}" desde su vocal tonica? (escribe todas las letras)
+3. Cual es la terminacion exacta de "${guess}" desde su vocal tonica? (escribe todas las letras)
+4. Son IDENTICAS las terminaciones? Si SI -> consonante. Si NO, coinciden solo las vocales? Si SI -> asonante. Si NO -> ninguna.
+5. Complejidad de "${guess}": 1=monosilabo muy comun, 10=palabra larga o tecnica muy rara.
 
-Responde SOLO con JSON, sin nada más, sin backticks:
+Responde SOLO con JSON sin backticks ni texto extra:
 {
-  "es_palabra_real": true/false,
-  "patron_base": "vocales desde tónica de la base",
-  "patron_candidata": "vocales desde tónica de la candidata",
-  "tipo_rima": "consonante" | "asonante" | "ninguna",
-  "complejidad": 1-10,
-  "explicacion": "frase corta"
+  "es_palabra_real": true,
+  "terminacion_base": "terminacion de la base",
+  "terminacion_candidata": "terminacion de la candidata",
+  "patron_base": "solo vocales",
+  "patron_candidata": "solo vocales",
+  "tipo_rima": "consonante",
+  "complejidad": 5,
+  "explicacion": "explicacion breve"
 }`;
 
     try {
