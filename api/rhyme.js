@@ -8,34 +8,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Missing guess or base' });
     }
 
-    const prompt = `Eres un experto en métrica y fonética española. Evalúa con MAXIMA PRECISION si dos palabras riman.
-
-Palabra base: "${base}"
-Palabra candidata: "${guess}"
-
-DEFINICIONES EXACTAS:
-- Rima CONSONANTE: desde la ultima vocal TONICA, coinciden TODOS los sonidos (vocales Y consonantes). Ejemplo: CARTA/MARTA=consonante (ambas terminan en "arta"), PELO/CIELO=consonante (ambas en "elo"), AMOR/CALOR=consonante (ambas en "or").
-- Rima ASONANTE: desde la ultima vocal TONICA, coinciden SOLO las vocales, las consonantes son DISTINTAS. Ejemplo: CARTA(A-A)/CALMA(A-A)=asonante porque "arta" != "alma". PELO(E-O)/FUEGO(E-O)=asonante porque "elo" != "ego".
-- NINGUNA: los patrones vocalicos no coinciden.
-
-PROCESO OBLIGATORIO paso a paso:
-1. Es "${guess}" una palabra real del espanol?
-2. Cual es la terminacion exacta de "${base}" desde su vocal tonica? (escribe todas las letras)
-3. Cual es la terminacion exacta de "${guess}" desde su vocal tonica? (escribe todas las letras)
-4. Son IDENTICAS las terminaciones? Si SI -> consonante. Si NO, coinciden solo las vocales? Si SI -> asonante. Si NO -> ninguna.
-5. Complejidad de "${guess}": 1=monosilabo muy comun, 10=palabra larga o tecnica muy rara.
-
-Responde SOLO con JSON sin backticks ni texto extra:
-{
-  "es_palabra_real": true,
-  "terminacion_base": "terminacion de la base",
-  "terminacion_candidata": "terminacion de la candidata",
-  "patron_base": "solo vocales",
-  "patron_candidata": "solo vocales",
-  "tipo_rima": "consonante",
-  "complejidad": 5,
-  "explicacion": "explicacion breve"
-}`;
+    const prompt = 'Eres un experto en rimas españolas. Analiza estas dos palabras:\n\nBase: "' + base + '"\nCandidata: "' + guess + '"\n\nSigue estos pasos:\n1. Extrae la terminacion de "' + base + '" desde su vocal tonica (ej: CARTA→arta, LECHE→eche, PELO→elo)\n2. Extrae la terminacion de "' + guess + '" desde su vocal tonica\n3. Si las terminaciones son IDENTICAS → consonante\n4. Si solo coinciden las VOCALES de las terminaciones → asonante\n5. Si no coinciden → ninguna\n\nEjemplos:\n- LECHE(eche) y FLECHE(eche) → consonante\n- LECHE(eche) y VERDE(e-e) → asonante (ambas tienen e-e)\n- LECHE(eche) y CASA(a-a) → ninguna\n- PELO(elo) y CIELO(elo) → consonante\n- PELO(elo) y FUEGO(e-o) → asonante\n\nResponde SOLO con este JSON exacto sin backticks:\n{"es_palabra_real":true,"terminacion_base":"xxx","terminacion_candidata":"xxx","tipo_rima":"consonante","complejidad":5,"explicacion":"breve"}';
 
     try {
         const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -46,21 +19,27 @@ Responde SOLO con JSON sin backticks ni texto extra:
                 'anthropic-version': '2023-06-01'
             },
             body: JSON.stringify({
-               model: 'claude-haiku-4-5',
-                max_tokens: 400,
+                model: 'claude-haiku-4-5-20251001',
+                max_tokens: 200,
                 messages: [{ role: 'user', content: prompt }]
             })
         });
 
         const data = await response.json();
-        console.log('API response:', JSON.stringify(data));
-        const text = data.content.map(b => b.text || '').join('').trim();
-        const clean = text.replace(/```json|```/g, '').trim();
+        console.log('Status:', response.status, 'Data:', JSON.stringify(data).slice(0, 300));
+
+        if (!data.content || !data.content[0]) {
+            console.error('Unexpected API response:', JSON.stringify(data));
+            return res.status(500).json({ error: 'Unexpected API response', detail: data.error || data });
+        }
+
+        const text = data.content[0].text || '';
+        const clean = text.replace(/```[a-z]*/g, '').replace(/```/g, '').trim();
         const result = JSON.parse(clean);
         return res.status(200).json(result);
 
     } catch (err) {
-        console.error('Anthropic API error:', err);
-        return res.status(500).json({ error: 'API error' });
+        console.error('Error:', err.message);
+        return res.status(500).json({ error: err.message });
     }
 }
