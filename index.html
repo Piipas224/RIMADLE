@@ -494,11 +494,22 @@
         }
 
         @media (max-width: 560px) {
-            :root { --cell-size: 48px; }
+            :root { --cell-size: 46px; }
             .logo { font-size: 2rem; }
-            .base-word { font-size: 2.5rem; letter-spacing: 4px; padding: 8px 24px; }
-            .cell { font-size: 1.3rem; }
-            .key { height: 46px; font-size: 0.85rem; }
+            .base-word { font-size: 2.2rem; letter-spacing: 3px; padding: 7px 18px; }
+            .cell { font-size: 1.2rem; }
+            .key { height: 42px; font-size: 0.78rem; min-width: 0; max-width: none; flex: 1; padding: 0 2px; }
+            .key.wide { min-width: 0; max-width: none; flex: 1.6; }
+            .keyboard { gap: 5px; }
+            .key-row { gap: 4px; }
+            .stats-bar { gap: 12px; }
+            .stat-val { font-size: 1.4rem; }
+        }
+
+        @media (max-width: 380px) {
+            .key { height: 38px; font-size: 0.72rem; }
+            .base-word { font-size: 1.9rem; letter-spacing: 2px; }
+            :root { --cell-size: 40px; }
         }
     </style>
 </head>
