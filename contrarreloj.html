@@ -554,11 +554,20 @@
         .play-again-btn:active { transform: scale(0.97); }
 
         @media (max-width: 560px) {
-            :root { --cell-size: 46px; }
+            :root { --cell-size: 42px; }
             .logo { font-size: 2rem; }
-            .base-word { font-size: 2.4rem; letter-spacing: 4px; padding: 8px 20px; }
-            .key { height: 44px; font-size: 0.85rem; }
-            .timer-value { font-size: 2.2rem; }
+            .base-word { font-size: 2rem; letter-spacing: 3px; padding: 7px 16px; }
+            .key { height: 40px; font-size: 0.75rem; min-width: 0; max-width: none; flex: 1; padding: 0 2px; }
+            .key.wide { min-width: 0; max-width: none; flex: 1.6; }
+            .keyboard { gap: 5px; }
+            .key-row { gap: 4px; }
+            .timer-value { font-size: 2rem; }
+        }
+
+        @media (max-width: 380px) {
+            .key { height: 36px; font-size: 0.68rem; }
+            .base-word { font-size: 1.7rem; }
+            :root { --cell-size: 36px; }
         }
     </style>
 </head>
