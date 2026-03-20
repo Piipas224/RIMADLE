@@ -53,6 +53,7 @@ Responde SOLO con JSON sin backticks ni texto extra:
         });
 
         const data = await response.json();
+        console.log('API response:', JSON.stringify(data));
         const text = data.content.map(b => b.text || '').join('').trim();
         const clean = text.replace(/```json|```/g, '').trim();
         const result = JSON.parse(clean);
