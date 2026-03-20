@@ -570,41 +570,25 @@ const MODES = {
         label: 'FÁCIL',
         badgeClass: 'facil',
         scoreMultiplier: 1,
-        wordPrompt: `MODO FÁCIL. Elige una palabra MUY CORTA Y COMÚN en español.
-LONGITUD: mínimo 3 letras, máximo 5 letras. Cuenta las letras antes de responder.
-TIPO: sustantivo cotidiano que cualquier niño de 6 años conoce.
-USA palabras como: SOL (3), PAN (3), MAR (3), GATO (4), CASA (4), LUNA (4), MESA (4), NUBE (4), TREN (4), FLOR (4), PATO (4), PELO (4), NOCHE (5), CAMPO (5), BELLO (5).
-NO uses palabras de 6 o más letras.`
+        wordPrompt: "MODO FÁCIL. Elige una palabra MUY CORTA Y COMÚN en español.\nLONGITUD: mínimo 3 letras, máximo 5 letras. Cuenta las letras antes de responder.\nTIPO: sustantivo cotidiano que cualquier niño de 6 años conoce.\nUSA palabras como: SOL (3), PAN (3), MAR (3), GATO (4), CASA (4), LUNA (4), MESA (4), NUBE (4), TREN (4), FLOR (4), PATO (4), PELO (4), NOCHE (5), CAMPO (5), BELLO (5).\nNO uses palabras de 6 o más letras."
     },
     medio: {
         label: 'MEDIO',
         badgeClass: 'medio',
         scoreMultiplier: 1.5,
-        wordPrompt: `MODO MEDIO. Elige una palabra DE LONGITUD MEDIA en español.
-LONGITUD: mínimo 6 letras, máximo 8 letras. Cuenta las letras antes de responder.
-TIPO: conocida por adultos, no demasiado simple ni rebuscada.
-USA palabras como: TRUENO (6), ESPEJO (6), BOSQUE (6), CAMINO (6), SOMBRA (6), NUBLADO (7), PALMERA (7), CASCADA (7), CRISTAL (7), VENTANA (7), SILENCIO (8), TORMENTA (8), HORIZONTE (no, 9 letras - demasiado larga).
-NO uses palabras de menos de 6 ni más de 8 letras.`
+        wordPrompt: "MODO MEDIO. Elige una palabra DE LONGITUD MEDIA en español.\nLONGITUD: mínimo 6 letras, máximo 8 letras. Cuenta las letras antes de responder.\nTIPO: conocida por adultos, no demasiado simple ni rebuscada.\nUSA palabras como: TRUENO (6), ESPEJO (6), BOSQUE (6), CAMINO (6), SOMBRA (6), NUBLADO (7), PALMERA (7), CASCADA (7), CRISTAL (7), VENTANA (7), SILENCIO (8), TORMENTA (8), HORIZONTE (no, 9 letras - demasiado larga).\nNO uses palabras de menos de 6 ni más de 8 letras."
     },
     dificil: {
         label: 'DIFÍCIL',
         badgeClass: 'dificil',
         scoreMultiplier: 2.5,
-        wordPrompt: `MODO DIFÍCIL. Elige una palabra LARGA Y POCO COMÚN en español.
-LONGITUD: mínimo 9 letras, máximo 11 letras. Cuenta las letras antes de responder.
-TIPO: literaria, filosófica o culta. Un adulto normal puede no conocerla.
-USA palabras como: CREPUSCULO (10), MELANCOLIA (10), LABERINTO (9), PERPLEJIDAD (11), TURBULENCIA (11), ESPLENDIDO (10), NOSTALGI CO (10), EFIMERO (no, 7 letras), TREPIDANTE (10), ABOMINABLE (10), QUIMERICO (9), EVANESCENTE (11).
-NO uses palabras de menos de 9 ni más de 11 letras. NO uses palabras simples.`
+        wordPrompt: "MODO DIFÍCIL. Elige una palabra LARGA Y POCO COMÚN en español.\nLONGITUD: mínimo 9 letras, máximo 11 letras. Cuenta las letras antes de responder.\nTIPO: literaria, filosófica o culta. Un adulto normal puede no conocerla.\nUSA palabras como: CREPUSCULO (10), MELANCOLIA (10), LABERINTO (9), PERPLEJIDAD (11), TURBULENCIA (11), ESPLENDIDO (10), NOSTALGI CO (10), EFIMERO (no, 7 letras), TREPIDANTE (10), ABOMINABLE (10), QUIMERICO (9), EVANESCENTE (11).\nNO uses palabras de menos de 9 ni más de 11 letras. NO uses palabras simples."
     },
     imposible: {
         label: 'IMPOSIBLE',
         badgeClass: 'imposible',
         scoreMultiplier: 4,
-        wordPrompt: `MODO IMPOSIBLE. Elige una palabra MUY LARGA Y EXTREMADAMENTE RARA en español.
-LONGITUD: mínimo 12 letras, máximo 16 letras. Cuenta las letras antes de responder.
-TIPO: técnica, filosófica, médica o arcaica. Casi nadie la conoce.
-USA palabras como: PROCRASTINACION (15), BIOLUMINISCENCIA (16), CONDESCENDIENTE (15), INCOMPRENSIBLE (14), MAGNANIMIDAD (12), EXTRAORDINARIO (14), EXCOMUNICACION (14), CIRCUNNAVEGAR (13), TRANSCENDENTAL (14), SUPERSTICION (12), PRECIPITADAMENTE (16), METAMORFOSIS (12).
-NO uses palabras de menos de 12 letras. NO uses palabras comunes o conocidas.`
+        wordPrompt: "MODO IMPOSIBLE. Elige una palabra MUY LARGA Y EXTREMADAMENTE RARA en español.\nLONGITUD: mínimo 12 letras, máximo 16 letras. Cuenta las letras antes de responder.\nTIPO: técnica, filosófica, médica o arcaica. Casi nadie la conoce.\nUSA palabras como: PROCRASTINACION (15), BIOLUMINISCENCIA (16), CONDESCENDIENTE (15), INCOMPRENSIBLE (14), MAGNANIMIDAD (12), EXTRAORDINARIO (14), EXCOMUNICACION (14), CIRCUNNAVEGAR (13), TRANSCENDENTAL (14), SUPERSTICION (12), PRECIPITADAMENTE (16), METAMORFOSIS (12).\nNO uses palabras de menos de 12 letras. NO uses palabras comunes o conocidas."
     }
 };
 
@@ -716,22 +700,6 @@ async function askClaude(guess, base) {
     });
     if (!response.ok) throw new Error('API error ' + response.status);
     return await response.json();
-}`;
-
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            model: "claude-sonnet-4-5",
-            max_tokens: 400,
-            messages: [{ role: "user", content: prompt }]
-        })
-    });
-
-    const data = await response.json();
-    const text = data.content.map(b => b.text || "").join("").trim();
-    const clean = text.replace(/`+json|`+/g, "").trim();
-    return JSON.parse(clean);
 }
 
 // ──────────────────────────────────────────────
@@ -881,7 +849,7 @@ function updateKeyColor(letter, colorClass) {
     if (colorClass === 'gray') return; // no marcar gris en el teclado
     const map = { green: 'k-green', yellow: 'k-yellow' };
     const priority = ['k-green', 'k-yellow'];
-    document.querySelectorAll(`.key[data-key="${letter}"]`).forEach(btn => {
+    document.querySelectorAll(".key[data-key=\"" + letter + "\"]").forEach(btn => {
         const newCls = map[colorClass];
         if (!newCls) return;
         const curPriority = priority.findIndex(p => btn.classList.contains(p));
@@ -1059,16 +1027,16 @@ async function submitGuess() {
             // LOSE
             streak = 0;
             updateStatsUI();
-            showMessage(`😞 Se acabaron los intentos. La base era "${currentBaseWord}"`, 'error', 0);
+            showMessage("😞 Se acabaron los intentos. La base era \"" + currentBaseWord + "\"", 'error', 0);
             showEndPanel(false, roundPoints);
             gameFinished = true;
         } else {
             document.getElementById('row-' + currentRow)?.classList.add('active-row');
             updateActiveRow();
             if (color === 'yellow') {
-                showMessage(`🟡 Rima asonante — ${result.explicacion}`, 'warn', 5000);
+                showMessage('🟡 Rima asonante — ' + result.explicacion, 'warn', 5000);
             } else {
-                showMessage(`⬛ No rima — ${result.explicacion}`, '', 5000);
+                showMessage('⬛ No rima — ' + result.explicacion, '', 5000);
             }
         }
     }
@@ -1083,8 +1051,8 @@ function showEndPanel(won, pts, rhymeInfo) {
     document.getElementById('endTitle').textContent = won ? '¡GANASTE!' : 'SIN INTENTOS';
     const winWord = attempts[attempts.length-1]?.word || currentInput;
     document.getElementById('endSub').textContent = won
-        ? `Rimaste "${winWord}" con "${currentBaseWord}"`
-        : `No encontraste ninguna rima consonante`;
+        ? "Rimaste \"" + winWord + "\" con \"" + currentBaseWord + "\""
+        : "No encontraste ninguna rima consonante";
 
     const detailEl = document.getElementById('endRhymeDetail');
     if (won && rhymeInfo) {
@@ -1093,12 +1061,10 @@ function showEndPanel(won, pts, rhymeInfo) {
         const patronCand = rhymeInfo.patron_candidata || '';
         const tipoLabel = tipo === 'consonante' ? 'RIMA CONSONANTE' : 'RIMA ASONANTE';
         const patronInfo = (patronBase && patronCand)
-            ? `<strong>${patronBase.toUpperCase()}</strong> · <strong>${patronCand.toUpperCase()}</strong>`
+            ? "<strong>" + patronBase.toUpperCase() + "</strong> · <strong>" + patronCand.toUpperCase() + "</strong>"
             : '';
-        detailEl.innerHTML = `
-            <div class="end-rhyme-type ${tipo}">${tipoLabel}</div>
-            ${patronInfo ? `<div class="end-rhyme-what">Patrón: ${patronInfo}</div>` : ''}
-        `;
+        detailEl.innerHTML = '<div class="end-rhyme-type ' + tipo + '">' + tipoLabel + '</div>' +
+            (patronInfo ? '<div class="end-rhyme-what">Patrón: ' + patronInfo + '</div>' : '');
     } else {
         detailEl.innerHTML = '';
     }
@@ -1149,7 +1115,7 @@ function newGame() {
 
     document.getElementById('baseWordDisplay').textContent = currentBaseWord;
     const ending = getRhymeEnding(currentBaseWord);
-    document.getElementById('rhymeHint').innerHTML = `Terminación: <strong>…${ending.toLowerCase()}</strong>`;
+    document.getElementById('rhymeHint').innerHTML = "Terminación: <strong>…" + ending.toLowerCase() + "</strong>";
 }
 
 // ──────────────────────────────────────────────
