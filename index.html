@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RIMADLE</title>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -489,6 +488,11 @@
         .mode-badge.dificil   { background: #fb923c22; color: #fb923c; }
         .mode-badge.imposible { background: #f8717122; color: #f87171; }
 
+        @keyframes pulse {
+            0%,100% { opacity: 0.4; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
         @media (max-width: 560px) {
             :root { --cell-size: 48px; }
             .logo { font-size: 2rem; }
@@ -506,18 +510,24 @@
     </div>
     <div class="logo">RIMA<span>DLE</span></div>
     <div class="header-right">
-        <div class="stats-bar">
-            <div class="stat">
-                <div class="stat-val" id="totalScore">0</div>
-                <div class="stat-label">Puntos</div>
-            </div>
-            <div class="stat">
-                <div class="stat-val" id="gamesWon">0</div>
-                <div class="stat-label">Ganadas</div>
-            </div>
-            <div class="stat">
-                <div class="stat-val" id="streak">0</div>
-                <div class="stat-label">Racha</div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px">
+            <button onclick="window.location.href='/contrarreloj'" style="font-family:'Bebas Neue',sans-serif;font-size:0.8rem;letter-spacing:2px;padding:6px 14px;border-radius:20px;border:1px solid #2e2e2e;background:#242424;color:#71717a;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.15s" onmouseover="this.style.borderColor='#fb923c';this.style.color='#fb923c'" onmouseout="this.style.borderColor='#2e2e2e';this.style.color='#71717a'">
+                <span style="width:7px;height:7px;border-radius:50%;background:#fb923c;animation:pulse 1.2s ease-in-out infinite;display:inline-block"></span>
+                CONTRARRELOJ
+            </button>
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-val" id="totalScore">0</div>
+                    <div class="stat-label">Puntos</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-val" id="gamesWon">0</div>
+                    <div class="stat-label">Ganadas</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-val" id="streak">0</div>
+                    <div class="stat-label">Racha</div>
+                </div>
             </div>
         </div>
     </div>
@@ -547,7 +557,7 @@
 </div>
 
 <div class="end-panel" id="endPanel">
-    <div class="end-emoji" id="endEmoji"></div>
+    <div class="end-emoji" id="endEmoji">🎉</div>
     <div class="end-title" id="endTitle">¡GANASTE!</div>
     <div class="end-sub" id="endSub">Encontraste la rima</div>
     <div class="end-rhyme-detail" id="endRhymeDetail"></div>
@@ -565,7 +575,6 @@
 
 // ──────────────────────────────────────────────
 // MODES CONFIG
-// ESTO GENERARIA LA PALBRA PERO YA NO SE UTILIZA Y SE HA IMPLEMENTADO UN DICCIONARIO
 // ──────────────────────────────────────────────
 const MODES = {
     facil: {
@@ -1108,7 +1117,7 @@ async function submitGuess() {
 // ──────────────────────────────────────────────
 function showEndPanel(won, pts, rhymeInfo) {
     const panel = document.getElementById('endPanel');
-    document.getElementById('endEmoji').textContent = '';
+    document.getElementById('endEmoji').textContent = won ? '🎉' : '😞';
     document.getElementById('endTitle').textContent = won ? '¡GANASTE!' : 'SIN INTENTOS';
     const winWord = attempts[attempts.length-1]?.word || currentInput;
     document.getElementById('endSub').textContent = won
