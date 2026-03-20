@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/rhyme", "destination": "/api/rhyme.js" },
+    { "source": "/contrarreloj", "destination": "/contrarreloj.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
