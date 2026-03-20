@@ -1108,7 +1108,7 @@ async function submitGuess() {
 // ──────────────────────────────────────────────
 function showEndPanel(won, pts, rhymeInfo) {
     const panel = document.getElementById('endPanel');
-    document.getElementById('endEmoji').textContent = won ? '🎉' : '😞';
+    document.getElementById('endEmoji').textContent = '';
     document.getElementById('endTitle').textContent = won ? '¡GANASTE!' : 'SIN INTENTOS';
     const winWord = attempts[attempts.length-1]?.word || currentInput;
     document.getElementById('endSub').textContent = won
