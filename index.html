@@ -955,7 +955,8 @@ async function submitGuess() {
     if (guess === currentBaseWord) {
         showMessage('⚠️ Esa es la palabra base, ¡busca una que rime!', 'warn');
         return;
-    }tipo_rima: quick === 'likely_green' ? 'consonante' : 'ninguna',
+    }
+
     // Fast local pre-check
     const quick = quickRhymeCheck(guess, currentBaseWord);
 
