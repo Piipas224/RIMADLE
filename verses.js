@@ -1,0 +1,73 @@
+// ──────────────────────────────────────────────
+// RIMADLE — Lista de versos iniciales
+// Edita este archivo para añadir o quitar versos
+// del modo Estrofa sin tocar el código del juego
+// ──────────────────────────────────────────────
+
+const INITIAL_VERSES = [
+    // Naturaleza
+    "El mar rompe contra las rocas",
+    "El viento susurra entre arboles",
+    "La luna se asoma entre nubes",
+    "Las flores se abren al alba",
+    "El rio canta su cancion",
+    "La noche cayo sobre el valle",
+    "El fuego ilumina la noche",
+    "Corres sin miedo por el campo",
+    "Bailas descalza sobre la arena",
+    "El cielo se tino de naranja",
+    "La lluvia golpea los cristales",
+    "Entre montanas nace el dia",
+    "El bosque guarda mil secretos",
+    "La tormenta ruge en la distancia",
+    "El sol se hunde en el horizonte",
+    "Las olas besan la orilla",
+    "El trueno rompe el silencio",
+    "La niebla cubre el camino",
+    "Los pajaros anuncian la aurora",
+    "El viento arrastra las hojas secas",
+
+    // Sentimientos
+    "Que bonitos tus ojos azules",
+    "El tiempo se escapa entre dedos",
+    "Tus manos son suaves y calidas",
+    "Tu voz es como el agua clara",
+    "Bajo la lluvia te vi partir",
+    "El silencio pesa como el plomo",
+    "Tus palabras saben a miel y sal",
+    "Entre tus brazos encontre la paz",
+    "Me pierdo en tu mirada profunda",
+    "Tu risa ilumina la habitacion",
+    "Camino perdido entre sombras",
+    "El amor llega sin avisar",
+    "Guardas mis suenos en tu corazon",
+    "La soledad tiene su propio ritmo",
+    "Tu ausencia llena cada rincon",
+    "Me quedo sin palabras al verte",
+    "El recuerdo duele y consuela",
+    "Cada adios deja una herida",
+    "Tu nombre resuena en mi mente",
+    "La tristeza tiene cara de lluvia",
+
+    // Cotidiano y reflexivo
+    "El cafe humea en la manana",
+    "Las calles despiertan despacio",
+    "El tren parte sin mirar atras",
+    "La ciudad duerme bajo las estrellas",
+    "Un libro abierto sobre la mesa",
+    "El reloj marca las horas sin prisa",
+    "La vela titila en la oscuridad",
+    "El pan recien hecho huele a hogar",
+    "Los ninos corren por el parque",
+    "La musica llena el cuarto vacio",
+    "Un papel en blanco me espera",
+    "Las manos vacias al final del dia",
+    "El espejo refleja lo que oculto",
+    "La palabra justa no aparece",
+    "Cada dia es un nuevo comienzo",
+    "El mapa no muestra todos los caminos",
+    "Las estrellas no entienden de fronteras",
+    "El silencio tiene sus propias palabras",
+    "Un momento basta para cambiarlo todo",
+    "La vida pasa rapido entre semaforos",
+];
