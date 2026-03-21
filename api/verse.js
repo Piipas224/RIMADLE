@@ -64,13 +64,52 @@ export default async function handler(req, res) {
         const scheme = letters.join('');
 
         const schemeMap = {
+            // 2 versos
+            'AA': 'Pareado',
+            'AB': 'Verso libre',
+            // 3 versos
+            'AAA': 'Monorrima terceto',
+            'ABA': 'Terceto encadenado',
+            'AAB': 'Terceto mixto',
+            'ABB': 'Terceto mixto',
+            'ABC': 'Verso libre',
+            // 4 versos
             'AABB': 'Pareados',
             'ABAB': 'Rima cruzada',
             'ABBA': 'Rima abrazada',
             'AAAA': 'Monorrima',
+            'AAAB': 'Seguidilla',
+            'ABBB': 'Rima abrazada parcial',
+            'AABA': 'Rima abrazada parcial',
+            'ABAC': 'Rima alterna libre',
+            'ABCA': 'Rima circular',
+            'ABCB': 'Balada inglesa',
+            'ABCD': 'Verso libre',
+            // 5 versos
+            'AABBA': 'Quintilla',
+            'ABABA': 'Quintilla cruzada',
+            'AABAB': 'Quintilla mixta',
+            'ABBAB': 'Quintilla envuelta',
+            'AABBB': 'Quintilla pareada',
+            'ABCCB': 'Quintilla espejo',
+            // 6 versos
             'AABBCC': 'Sextilla',
             'ABABAB': 'Sexteto',
             'ABCABC': 'Rima alternada',
+            'ABABCC': 'Sexteto agudo',
+            'AABCCB': 'Sextilla francesa',
+            'ABCBDB': 'Balada',
+            'AAABBB': 'Sextilla pareada',
+            'ABBAAB': 'Sexteto de rima abrazada',
+            // 7 versos
+            'ABABBCC': 'Septima',
+            'ABABCCB': 'Septima variante',
+            // 8 versos
+            'ABABABAB': 'Octava real',
+            'ABBAABBA': 'Octava italiana',
+            'AABBCCDD': 'Octava pareada',
+            'ABABCDCD': 'Doble cuarteto cruzado',
+            'ABABBCBC': 'Balada octava',
         };
 
         // Count unique letters to describe
