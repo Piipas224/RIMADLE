@@ -181,7 +181,7 @@
 
 <header>
     <div class="header-left"></div>
-    <div class="logo">RIMA<span>DLE</span></div>
+    <div class="logo" style="color:var(--purple)">RIMA<span style="color:var(--text)">DLE</span></div>
     <div class="header-right">
         <button class="mode-switch" id="modeSwitchBtn">CLASICO</button>
     </div>
@@ -331,7 +331,7 @@ sendBtn.addEventListener('click', () => {
 });
 
 document.getElementById('modeSwitchBtn').addEventListener('click', () => {
-    window.location.href = '/';
+    window.location.href = '/home';
 });
 
 document.getElementById('playAgainBtn').addEventListener('click', () => {
@@ -357,10 +357,10 @@ async function sendStropha(text) {
 
     try {
         const resp = await Promise.race([
-            fetch('/api/rhyme', {
+            fetch('/api/verse', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ poem: fullPoem, mode: 'analyze' })
+                body: JSON.stringify({ poem: fullPoem })
             }).then(r => r.json()),
             new Promise((_,rej) => setTimeout(() => rej(new Error('timeout')), 15000))
         ]);
