@@ -244,7 +244,7 @@ Cuando termines pulsa Enviar."
     </div>
 
     <div class="ai-analysis">
-        <div class="analysis-title">Valoracion</div>
+        <div class="analysis-title">Valoracion de la IA</div>
         <div class="analysis-comment" id="analysisComment">-</div>
         <div class="analysis-scores">
             <div class="ascore"><div class="ascore-val" id="scoreRima">-</div><div class="ascore-label">Rima</div></div>
@@ -265,31 +265,11 @@ Cuando termines pulsa Enviar."
     </div>
 </div>
 
+<script src="/verses.js"></script>
 <script>
 (function () {
 
-const INITIAL_VERSES = [
-    "Que bonitos tus ojos azules",
-    "En el cielo brilla una estrella",
-    "La luna se asoma entre nubes",
-    "El viento susurra entre arboles",
-    "Camino perdido entre sombras",
-    "El mar rompe contra las rocas",
-    "Tu voz es como el agua clara",
-    "Las flores se abren al alba",
-    "El tiempo se escapa entre dedos",
-    "Bailas descalza sobre la arena",
-    "El rio canta su cancion",
-    "La noche cayo sobre el valle",
-    "Corres sin miedo por el campo",
-    "El fuego ilumina la noche",
-    "Tus manos son suaves y calidas",
-    "Bajo la lluvia te vi partir",
-    "El silencio pesa como el plomo",
-    "Tus palabras saben a miel y sal",
-    "La tarde se tino de naranja",
-    "Entre tus brazos encontre la paz",
-];
+
 
 const SCHEME_COLORS = ['#a78bfa','#4ade80','#facc15','#fb923c','#f87171','#60a5fa'];
 
@@ -344,15 +324,31 @@ async function sendStropha(text) {
     isAnalyzing = true;
     sendBtn.disabled = true;
 
+    // Remove duplicate first verse if user accidentally repeated it
+    const userLines = text.split('\n');
+    const firstUserLine = userLines[0].trim().toLowerCase().replace(/[.,;:!?]/g,'');
+    const initVerseLower = currentVerse.trim().toLowerCase().replace(/[.,;:!?]/g,'');
+    let cleanText = text;
+    if (firstUserLine === initVerseLower || firstUserLine.includes(initVerseLower) || initVerseLower.includes(firstUserLine)) {
+        cleanText = userLines.slice(1).join('\n').trim();
+    }
+
+    if (cleanText.length < 3) {
+        isAnalyzing = false;
+        sendBtn.disabled = false;
+        gameScreen.style.display = 'flex';
+        return;
+    }
+
     // Show analysis screen
     gameScreen.style.display = 'none';
     analysisScreen.classList.add('visible');
 
     // Show poem dimmed
     const ap = document.getElementById('analyzingPoem');
-    ap.textContent = currentVerse + '\n\n' + text;
+    ap.textContent = currentVerse + '\n\n' + cleanText;
 
-    const fullPoem = currentVerse + '\n' + text;
+    const fullPoem = currentVerse + '\n' + cleanText;
     let result;
 
     try {
@@ -438,7 +434,28 @@ function showEndScreen(result, poem) {
 
     const fp = document.getElementById('finalPoemLines');
     fp.innerHTML = '';
-    const letters = result.letras || lines.map((_,i) => String.fromCharCode(65 + (i % 26)));
+
+    // Recalculate letters from scratch to ensure consistency with scheme
+    function recalcLetters(linesArr) {
+        function getLastWord(s) { return s.trim().split(/\s+/).pop().replace(/[.,;:!?]/g,'').toUpperCase(); }
+        function normW(w) { return w.replace(/[ÁÉÍÓÚ]/g, c => ({Á:'A',É:'E',Í:'I',Ó:'O',Ú:'U'}[c]||c)); }
+        function getStem(w) {
+            w = normW(w); let c = 0;
+            for (let i = w.length-1; i >= 0; i--) {
+                if ('AEIOU'.includes(w[i])) { c++; if (c===2) return w.slice(i); }
+            }
+            return w;
+        }
+        const stems = linesArr.map(l => getStem(getLastWord(l)));
+        const map = {}; let next = 65;
+        return stems.map(s => { if (!map[s]) map[s] = String.fromCharCode(next++); return map[s]; });
+    }
+
+    // Use AI letters if they match line count, otherwise recalculate
+    const aiLetters = result.letras;
+    const letters = (aiLetters && aiLetters.length === lines.length)
+        ? aiLetters
+        : recalcLetters(lines);
 
     lines.forEach((line, i) => {
         const div = document.createElement('div');
