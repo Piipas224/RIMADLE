@@ -1,7 +1,0 @@
-{
-  "name": "rimadle",
-  "version": "12.0.0",
-  "engines": {
-    "node": "20.x"
-  }
-}
