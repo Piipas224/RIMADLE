@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/rhyme", "destination": "/api/rhyme.js" },
+    { "source": "/api/verse", "destination": "/api/verse.js" },
+    { "source": "/clasico", "destination": "/index.html" },
+    { "source": "/contrarreloj", "destination": "/contrarreloj.html" },
+    { "source": "/estrofa", "destination": "/estrofa.html" },
+    { "source": "/home", "destination": "/home.html" },
+    { "source": "/favicon.ico", "destination": "/favicon.ico" },
+    { "source": "/(.*)", "destination": "/home.html" }
+  ]
+}
