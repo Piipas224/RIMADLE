@@ -369,6 +369,22 @@
             gap: 4px;
             max-height: 160px;
             overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--surface2);
+        }
+
+        .history::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .history::-webkit-scrollbar-track {
+            background: var(--surface2);
+            border-radius: 2px;
+        }
+
+        .history::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 2px;
         }
 
         .history-item {
@@ -554,11 +570,20 @@
         .play-again-btn:active { transform: scale(0.97); }
 
         @media (max-width: 560px) {
-            :root { --cell-size: 46px; }
+            :root { --cell-size: 42px; }
             .logo { font-size: 2rem; }
-            .base-word { font-size: 2.4rem; letter-spacing: 4px; padding: 8px 20px; }
-            .key { height: 44px; font-size: 0.85rem; }
-            .timer-value { font-size: 2.2rem; }
+            .base-word { font-size: 2rem; letter-spacing: 3px; padding: 7px 16px; }
+            .key { height: 40px; font-size: 0.75rem; min-width: 0; max-width: none; flex: 1; padding: 0 2px; }
+            .key.wide { min-width: 0; max-width: none; flex: 1.6; }
+            .keyboard { gap: 5px; }
+            .key-row { gap: 4px; }
+            .timer-value { font-size: 2rem; }
+        }
+
+        @media (max-width: 380px) {
+            .key { height: 36px; font-size: 0.68rem; }
+            .base-word { font-size: 1.7rem; }
+            :root { --cell-size: 36px; }
         }
     </style>
 </head>
@@ -676,40 +701,11 @@
     <button class="play-again-btn" id="playAgainBtn">Jugar de nuevo</button>
 </div>
 
+<script src="/words.js"></script>
 <script>
 (function () {
 
 // ── WORD LISTS ────────────────────────────────────────────────
-const WORD_LISTS = {
-    facil: [
-        "SOL","PAN","MAR","PIE","OJO","RED","SAL","PAZ","LUZ","PEZ",
-        "GATO","CASA","LUNA","MESA","TREN","FLOR","AMOR","PELO","BESO","NUBE",
-        "PATO","VINO","ROCA","LAGO","PINO","HOJA","LOBO","RANA","TAZA","RISA",
-        "NOCHE","CAMPO","CIELO","FUEGO","VERDE","PLAYA","MONTE","CARTA","LECHE",
-        "LIBRO","SILLA","TARDE","MADRE","PADRE","CALLE","VALLE","CALMA","PERRO","CARRO"
-    ],
-    medio: [
-        "TRUENO","ESPEJO","CAMINO","SOMBRA","BOSQUE","VUELO","PIEDRA","TIERRA",
-        "VIENTO","LLUVIA","FUENTE","MUELLE","PALOMA","CORONA","ESPUMA","CUMBRE",
-        "SANGRE","HAMBRE","NOMBRE","GUERRA","FUERZA","PUERTA","VUELTA","NUBLADO",
-        "PALMERA","CASCADA","CRISTAL","VENTANA","MOMENTO","VERANO","ENCANTO","ARROYO",
-        "COLINA","AURORA","MIRADA","SONRISA","ALEGRIA","SOLEDAD","LIBERTAD","CIUDAD"
-    ],
-    dificil: [
-        "CREPUSCULO","MELANCOLIA","LABERINTO","ESPLENDIDO","NOSTALGICO","ABOMINABLE",
-        "TREPIDANTE","QUIMERICO","RESONANCIA","TURBULENCIA","FULMINANTE","RESPLANDOR",
-        "CAVERNOSO","PORTENTOSO","ARMONIOSO","CLAROSCURO","DESOLACION","PENUMBRA",
-        "TEMPESTAD","VENDAVAL","CENTELLA","EVANESCENTE","EFERVESCENTE","PERPLEJIDAD",
-        "EXUBERANTE","IMPETUOSO","FULGURANTE","APOCALIPSIS","CATACLISMO","CATASTROFE"
-    ],
-    imposible: [
-        "PROCRASTINACION","CONDESCENDIENTE","INCOMPRENSIBLE","EXTRAORDINARIO",
-        "MAGNANIMIDAD","EXCOMUNICACION","TRANSCENDENTAL","BIOLUMINISCENCIA",
-        "CIRCUNNAVEGAR","METAMORFOSIS","CIRCUNSTANCIAL","CONTRAPRODUCENTE",
-        "IMPRESCINDIBLE","IRRESPONSABILIDAD","INCOMPATIBILIDAD","SUSCEPTIBILIDAD",
-        "OMNIPRESENTE","PREPONDERANCIA","MAGNIFICENCIA","DESESTABILIZADOR"
-    ]
-};
 
 // ── STATE ─────────────────────────────────────────────────────
 let currentMode   = 'facil';
@@ -762,7 +758,7 @@ document.getElementById('playAgainBtn').addEventListener('click', () => {
 });
 
 document.getElementById('modeSwitchBtn').addEventListener('click', () => {
-    alert('Aquí irá el botón para volver al modo clásico');
+    window.location.href = '/';
 });
 
 // ── GAME FLOW ─────────────────────────────────────────────────
@@ -809,7 +805,7 @@ function startTimer() {
 }
 
 function addTime(secs) {
-    timeLeft = Math.max(0, timeLeft + secs);
+    timeLeft = Math.min(initialTime, Math.max(0, timeLeft + secs));
     updateTimerUI();
 }
 
