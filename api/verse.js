@@ -8,7 +8,21 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Missing poem' });
     }
 
-    const prompt = 'Eres un experto en poesia y metrica espanola. Analiza esta estrofa completa:\n\n' + poem + '\n\nEl primer verso fue dado por el sistema. Los siguientes los escribio un jugador.\n\nHaz lo siguiente:\n1. Identifica la ultima palabra de cada verso y su terminacion desde la vocal tonica.\n2. Determina el esquema de rima (AABB, ABAB, ABBA, AAAA, libre, etc) asignando letras a cada verso.\n3. Valora del 1 al 10: rima (precision de las rimas), sentido (coherencia tematica), creatividad (originalidad), fluidez (ritmo y musicalidad).\n4. Escribe un comentario poetico breve valorando la estrofa en espanol.\n5. Calcula puntos de 0 a 1000: cada verso vale 60 puntos base, multiplicado por la calidad media de las 4 dimensiones dividida entre 10.\n\nResponde SOLO con JSON sin backticks ni texto extra:\n{"esquema":"ABAB","descripcion":"Rima cruzada","letras":["A","B","A","B","C","D","C","D"],"comentario":"valoracion poetica aqui","rima":8,"sentido":7,"creatividad":8,"fluidez":7,"puntos":420}';
+    const lines = poem.split('\n').filter(l => l.trim().length > 0);
+    const n = lines.length;
+
+    const prompt = 'Eres un experto en poesia y metrica espanola. Analiza esta estrofa:\n\n' +
+        lines.map((l, i) => (i + 1) + '. ' + l).join('\n') +
+        '\n\nEl verso 1 fue dado. Los demas los escribio un jugador.\n\n' +
+        'TAREA:\n' +
+        '1. Para cada verso identifica su ultima palabra y la terminacion desde la vocal tonica.\n' +
+        '2. Asigna letras de rima: si dos versos riman en consonante o asonante comparten letra. Empieza por A.\n' +
+        '3. Devuelve exactamente ' + n + ' letras en el array "letras", una por verso en orden.\n' +
+        '4. Valora del 1-10: rima, sentido, creatividad, fluidez.\n' +
+        '5. Comentario poetico breve en espanol.\n' +
+        '6. Puntos: versos_usuario x 60 x (media_puntuaciones/10).\n\n' +
+        'Responde SOLO con JSON sin backticks:\n' +
+        '{"letras":["A","B","A","B"],"comentario":"texto","rima":8,"sentido":7,"creatividad":8,"fluidez":7,"puntos":420}';
 
     try {
         const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -19,7 +33,7 @@ export default async function handler(req, res) {
             },
             body: JSON.stringify({
                 model: 'llama-3.3-70b-versatile',
-                max_tokens: 400,
+                max_tokens: 300,
                 temperature: 0,
                 messages: [
                     {
@@ -38,14 +52,42 @@ export default async function handler(req, res) {
         console.log('Groq verse status:', response.status);
 
         if (!data.choices || !data.choices[0]) {
-            console.error('Unexpected Groq response:', JSON.stringify(data));
             return res.status(500).json({ error: 'Unexpected response', detail: data.error || data });
         }
 
         const text = data.choices[0].message.content || '';
         const clean = text.replace(/```[a-z]*/g, '').replace(/```/g, '').trim();
         const result = JSON.parse(clean);
-        return res.status(200).json(result);
+
+        // Derive scheme and description from letters (server-side, always consistent)
+        const letters = result.letras || [];
+        const scheme = letters.join('');
+
+        const schemeMap = {
+            'AABB': 'Pareados',
+            'ABAB': 'Rima cruzada',
+            'ABBA': 'Rima abrazada',
+            'AAAA': 'Monorrima',
+            'AABBCC': 'Sextilla',
+            'ABABAB': 'Sexteto',
+            'ABCABC': 'Rima alternada',
+        };
+
+        // Count unique letters to describe
+        const unique = new Set(letters).size;
+        let descripcion = schemeMap[scheme] || (unique <= 2 ? 'Rima consonante' : unique === letters.length ? 'Verso libre' : 'Esquema mixto');
+
+        return res.status(200).json({
+            esquema: scheme,
+            descripcion,
+            letras: letters,
+            comentario: result.comentario || '',
+            rima: result.rima || 5,
+            sentido: result.sentido || 5,
+            creatividad: result.creatividad || 5,
+            fluidez: result.fluidez || 5,
+            puntos: result.puntos || (n - 1) * 60,
+        });
 
     } catch (err) {
         console.error('Groq verse error:', err.message);
